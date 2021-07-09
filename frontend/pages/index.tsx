@@ -65,11 +65,11 @@ export default function Home() {
           </div>
           <div
             onClick={async () => {
-              SignUpWithEmailPassword(email, password, nama, angkatan, setId);
-              if (id != "") {
+              const uid = await SignUpWithEmailPassword(email, password);
+              if (uid !== "" || uid !== undefined) {
                 await addUser({
                   variables: {
-                    id: id,
+                    id: uid,
                     angkatan: angkatan,
                     nama: nama,
                     email: email,
