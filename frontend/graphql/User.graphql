@@ -4,3 +4,12 @@ query user {
     nama
   }
 }
+
+mutation addUser($angkatan: numeric!, $id: String!, $nama: String!, $email: String!) {
+  insert_user(objects: {id: $id, nama: $nama, angkatan: $angkatan, email: $email}) {
+    returning {
+      id
+      nama
+    }
+  }
+}

@@ -208,6 +208,7 @@ export type Subscription_RootUser_By_PkArgs = {
 export type User = {
   __typename?: 'user';
   angkatan: Scalars['numeric'];
+  email?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   nama: Scalars['String'];
 };
@@ -254,6 +255,7 @@ export type User_Bool_Exp = {
   _not?: Maybe<User_Bool_Exp>;
   _or?: Maybe<Array<User_Bool_Exp>>;
   angkatan?: Maybe<Numeric_Comparison_Exp>;
+  email?: Maybe<String_Comparison_Exp>;
   id?: Maybe<String_Comparison_Exp>;
   nama?: Maybe<String_Comparison_Exp>;
 };
@@ -272,6 +274,7 @@ export type User_Inc_Input = {
 /** input type for inserting data into table "user" */
 export type User_Insert_Input = {
   angkatan?: Maybe<Scalars['numeric']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   nama?: Maybe<Scalars['String']>;
 };
@@ -280,6 +283,7 @@ export type User_Insert_Input = {
 export type User_Max_Fields = {
   __typename?: 'user_max_fields';
   angkatan?: Maybe<Scalars['numeric']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   nama?: Maybe<Scalars['String']>;
 };
@@ -288,6 +292,7 @@ export type User_Max_Fields = {
 export type User_Min_Fields = {
   __typename?: 'user_min_fields';
   angkatan?: Maybe<Scalars['numeric']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   nama?: Maybe<Scalars['String']>;
 };
@@ -311,6 +316,7 @@ export type User_On_Conflict = {
 /** Ordering options when selecting data from "user". */
 export type User_Order_By = {
   angkatan?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   nama?: Maybe<Order_By>;
 };
@@ -325,6 +331,8 @@ export enum User_Select_Column {
   /** column name */
   Angkatan = 'angkatan',
   /** column name */
+  Email = 'email',
+  /** column name */
   Id = 'id',
   /** column name */
   Nama = 'nama'
@@ -333,6 +341,7 @@ export enum User_Select_Column {
 /** input type for updating data in table "user" */
 export type User_Set_Input = {
   angkatan?: Maybe<Scalars['numeric']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   nama?: Maybe<Scalars['String']>;
 };
@@ -366,6 +375,8 @@ export enum User_Update_Column {
   /** column name */
   Angkatan = 'angkatan',
   /** column name */
+  Email = 'email',
+  /** column name */
   Id = 'id',
   /** column name */
   Nama = 'nama'
@@ -397,6 +408,25 @@ export type UserQuery = (
   & { user: Array<(
     { __typename?: 'user' }
     & Pick<User, 'id' | 'nama'>
+  )> }
+);
+
+export type AddUserMutationVariables = Exact<{
+  angkatan: Scalars['numeric'];
+  id: Scalars['String'];
+  nama: Scalars['String'];
+  email: Scalars['String'];
+}>;
+
+
+export type AddUserMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_user?: Maybe<(
+    { __typename?: 'user_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'user' }
+      & Pick<User, 'id' | 'nama'>
+    )> }
   )> }
 );
 
@@ -436,3 +466,42 @@ export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQ
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
+export const AddUserDocument = gql`
+    mutation addUser($angkatan: numeric!, $id: String!, $nama: String!, $email: String!) {
+  insert_user(objects: {id: $id, nama: $nama, angkatan: $angkatan, email: $email}) {
+    returning {
+      id
+      nama
+    }
+  }
+}
+    `;
+export type AddUserMutationFn = Apollo.MutationFunction<AddUserMutation, AddUserMutationVariables>;
+
+/**
+ * __useAddUserMutation__
+ *
+ * To run a mutation, you first call `useAddUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addUserMutation, { data, loading, error }] = useAddUserMutation({
+ *   variables: {
+ *      angkatan: // value for 'angkatan'
+ *      id: // value for 'id'
+ *      nama: // value for 'nama'
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useAddUserMutation(baseOptions?: Apollo.MutationHookOptions<AddUserMutation, AddUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddUserMutation, AddUserMutationVariables>(AddUserDocument, options);
+      }
+export type AddUserMutationHookResult = ReturnType<typeof useAddUserMutation>;
+export type AddUserMutationResult = Apollo.MutationResult<AddUserMutation>;
+export type AddUserMutationOptions = Apollo.BaseMutationOptions<AddUserMutation, AddUserMutationVariables>;
